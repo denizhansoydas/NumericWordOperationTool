@@ -30,8 +30,8 @@ public class Client implements BundleActivator, ServiceListener {
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-            	//MyJFrame frame = new MyJFrame(bundleContext, language); // will be uncommented.
-            	MyJFrame frame = new MyJFrame(bundleContext, "tr");
+            	MyJFrame frame = new MyJFrame(bundleContext, language); // will be uncommented.
+//            	MyJFrame frame = new MyJFrame(bundleContext, "tr");
                  frame.setVisible(true);
             }
         });
