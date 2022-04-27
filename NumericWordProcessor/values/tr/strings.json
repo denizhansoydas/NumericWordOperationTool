@@ -1,0 +1,11 @@
+{
+	"label_first_in" : "Birinci Sayı",
+	"label_second_in": "İkinci Sayı",
+	"label_result": "Sonuç",
+	"button_sum" : "Topla",
+	"button_sub" : "Çıkar",
+	"button_mul" : "Çarp",
+	"button_div" : "Böl"
+
+
+}

@@ -1,0 +1,9 @@
+{
+	"label_first_in" : "First Number",
+	"label_second_in" : "Second Number",
+	"label_result" : "Result",
+	"button_sum" : "Sum",
+	"button_sub" : "Subtract",
+	"button_mul" : "Multiply",
+	"button_div" : "Divide"
+}
