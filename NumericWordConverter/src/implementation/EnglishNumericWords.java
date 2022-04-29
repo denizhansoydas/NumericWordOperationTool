@@ -32,6 +32,9 @@ public class EnglishNumericWords extends LanguageNumericWords{
 
 	@Override
 	int convert(String num) {
+		int chIndex = num.indexOf(' ');
+		if(chIndex != -1 && num.substring(0,chIndex).equals("minus"))
+			return -Integer.parseInt(convertTextualNumbersInDocument(num.substring(chIndex + 1, num.length())));
 		return Integer.parseInt(convertTextualNumbersInDocument(num));
 	}
 

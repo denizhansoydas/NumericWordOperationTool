@@ -30,7 +30,9 @@ public class TurkishNumericWords extends LanguageNumericWords{
 
 	@Override
 	int convert(String num) {
-		// TODO Auto-generated method stub
+		int chIndex = num.indexOf(' ');
+		if(chIndex != -1 && num.substring(0,chIndex).equals("eksi"))
+			return -Integer.parseInt(convertTextualNumbersInDocument(num.substring(chIndex + 1, num.length())));
 		return Integer.parseInt(convertTextualNumbersInDocument(num));
 	}
 
@@ -43,7 +45,7 @@ public class TurkishNumericWords extends LanguageNumericWords{
 	private String convertHelper(int num) {
 		{
 	        if (num < 0) {
-	            return "- " + convertHelper(-num);
+	            return "eksi " + convertHelper(-num);
 	        }
 	        
 	        if (num < 11) {
