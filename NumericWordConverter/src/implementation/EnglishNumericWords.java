@@ -37,9 +37,15 @@ public class EnglishNumericWords extends LanguageNumericWords{
 
 	@Override
 	String convert(int num) {
+		if(num == 0)
+			return "zero";
+		return convertHelper(num);
+	}
+	
+	private String convertHelper(int num) {
 		{
 	        if (num < 0) {
-	            return "minus " + convert(-num);
+	            return "minus " + convertHelper(-num);
 	        }
 
 	        if (num < 20) {
@@ -51,18 +57,18 @@ public class EnglishNumericWords extends LanguageNumericWords{
 	        }
 
 	        if (num < 1000) {
-	            return units[num / 100] + " hundred" + ((num % 100 != 0) ? " " : "") + convert(num % 100);
+	            return units[num / 100] + " hundred" + ((num % 100 != 0) ? " " : "") + convertHelper(num % 100);
 	        }
 
 	        if (num < 1000000) {
-	            return convert(num / 1000) + " thousand" + ((num % 1000 != 0) ? " " : "") + convert(num % 1000);
+	            return convertHelper(num / 1000) + " thousand" + ((num % 1000 != 0) ? " " : "") + convertHelper(num % 1000);
 	        }
 
 	        if (num < 1000000000) {
-	            return convert(num / 1000000) + " million" + ((num % 1000000 != 0) ? " " : "") + convert(num % 1000000);
+	            return convertHelper(num / 1000000) + " million" + ((num % 1000000 != 0) ? " " : "") + convertHelper(num % 1000000);
 	        }
 
-	        return convert(num / 1000000000) + " billion"  + ((num % 1000000000 != 0) ? " " : "") + convert(num % 1000000000);
+	        return convertHelper(num / 1000000000) + " billion"  + ((num % 1000000000 != 0) ? " " : "") + convertHelper(num % 1000000000);
 	    }
 	}
 

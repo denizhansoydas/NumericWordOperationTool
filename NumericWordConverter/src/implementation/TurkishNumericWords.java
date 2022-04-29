@@ -36,11 +36,16 @@ public class TurkishNumericWords extends LanguageNumericWords{
 
 	@Override
 	String convert(int num) {
+		if(num == 0)
+			return "sýfýr";
+		return convertHelper(num);
+	}
+	private String convertHelper(int num) {
 		{
 	        if (num < 0) {
-	            return "- " + convert(-num);
+	            return "- " + convertHelper(-num);
 	        }
-
+	        
 	        if (num < 11) {
 	            return units[num];
 	        }
@@ -50,18 +55,18 @@ public class TurkishNumericWords extends LanguageNumericWords{
 	        }
 
 	        if (num < 1000) {
-	            return units[ num/100 == 1 ? 0 : num / 100] + " yüz" + ((num % 100 != 0) ? " " : "") + convert(num % 100);
+	            return units[ num/100 == 1 ? 0 : num / 100] + " yüz" + ((num % 100 != 0) ? " " : "") + convertHelper(num % 100);
 	        }
 
 	        if (num < 1000000) {
-	            return convert(num/1000 == 1 ? 0 : num / 1000) + " bin" + ((num % 1000 != 0) ? " " : "") + convert(num % 1000);
+	            return convertHelper(num/1000 == 1 ? 0 : num / 1000) + " bin" + ((num % 1000 != 0) ? " " : "") + convertHelper(num % 1000);
 	        }
 
 	        if (num < 1000000000) {
-	            return convert(num/1000000 == 1 ? 0 : num / 1000000) + " milyon" + ((num % 1000000 != 0) ? " " : "") + convert(num % 1000000);
+	            return convertHelper(num/1000000 == 1 ? 0 : num / 1000000) + " milyon" + ((num % 1000000 != 0) ? " " : "") + convertHelper(num % 1000000);
 	        }
 
-	        return convert(num/1000000000 == 1 ? 0 : num / 1000000000) + " milyar"  + ((num % 1000000000 != 0) ? " " : "") + convert(num % 1000000000);
+	        return convertHelper(num/1000000000 == 1 ? 0 : num / 1000000000) + " milyar"  + ((num % 1000000000 != 0) ? " " : "") + convertHelper(num % 1000000000);
 	    }
 	}
 
