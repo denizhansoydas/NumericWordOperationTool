@@ -241,10 +241,16 @@ public class MyJFrame extends JFrame{
     			System.out.println("First operand = " + first_operand);
     			int second_operand = numConverter.convertToInt(language, num2);
     			System.out.println("Second operand = " + second_operand);
-    			int result = first_operand / second_operand;
-    			String resultStr = numConverter.convertToString(language, result);
-    			System.out.println("Result = " + resultStr);
-    			tf_result.setText(resultStr);
+    			
+    			int result = 0;
+    			try {
+    				result = first_operand / second_operand;
+    				String resultStr = numConverter.convertToString(language, result);
+        			System.out.println("Result = " + resultStr);
+        			tf_result.setText(resultStr);
+    			}catch(ArithmeticException arithmeticException) {
+    				tf_result.setText("Invalid Operation because you've tried " + arithmeticException.getMessage());
+    			}    			
     		}
     	});
     	add(button_div, gbc);
