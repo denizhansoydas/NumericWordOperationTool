@@ -3,6 +3,8 @@ package implementation;
 import java.util.Arrays;
 import java.util.List;
 
+import exceptions.InvalidNumericWordException;
+
 public class TurkishNumericWords extends LanguageNumericWords{
 	public TurkishNumericWords() {
 		super();
@@ -26,14 +28,27 @@ public class TurkishNumericWords extends LanguageNumericWords{
 	            "seksen",  // 8
 	            "doksan"   // 9
 	    };
+		bigPowersOfTen = new String[] {
+			"bin",
+			"milyon",
+			"milyar",
+			"trilyon"
+		};
 	}
 
 	@Override
-	int convert(String num) {
+	int convert(String num) throws InvalidNumericWordException{
 		int chIndex = num.indexOf(' ');
-		if(chIndex != -1 && num.substring(0,chIndex).equals("eksi"))
-			return -Integer.parseInt(convertTextualNumbersInDocument(num.substring(chIndex + 1, num.length())));
-		return Integer.parseInt(convertTextualNumbersInDocument(num));
+		int res = 0;
+		if(chIndex != -1 && num.substring(0,chIndex).equals("eksi")) {
+			res = -Integer.parseInt(convertTextualNumbersInDocument(num.substring(chIndex + 1, num.length())));
+		}else {
+			res = Integer.parseInt(convertTextualNumbersInDocument(num)); 
+		} 
+		if(res == 0 && !num.equals("sýfýr")) {
+			throw new InvalidNumericWordException(num);
+		}
+		return res;
 	}
 
 	@Override
@@ -65,10 +80,10 @@ public class TurkishNumericWords extends LanguageNumericWords{
 	        }
 
 	        if (num < 1000000000) {
-	            return convertHelper(num/1000000 == 1 ? 0 : num / 1000000) + " milyon" + ((num % 1000000 != 0) ? " " : "") + convertHelper(num % 1000000);
+	            return convertHelper(num / 1000000) + " milyon" + ((num % 1000000 != 0) ? " " : "") + convertHelper(num % 1000000);
 	        }
 
-	        return convertHelper(num/1000000000 == 1 ? 0 : num / 1000000000) + " milyar"  + ((num % 1000000000 != 0) ? " " : "") + convertHelper(num % 1000000000);
+	        return convertHelper(num / 1000000000) + " milyar"  + ((num % 1000000000 != 0) ? " " : "") + convertHelper(num % 1000000000);
 	    }
 	}
 

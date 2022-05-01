@@ -4,13 +4,16 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import exceptions.InvalidNumericWordException;
+
 public abstract class LanguageNumericWords {
 	List<String> allowedStrings;
-	abstract int convert(String num);
+	abstract int convert(String num) throws InvalidNumericWordException;
 	abstract String convert(int num);
 	String regexCharSet;
 	String[] units;
 	String[] tens;
+	String[] bigPowersOfTen;
 	LanguageNumericWords(){
 		
 	}
@@ -34,6 +37,7 @@ public abstract class LanguageNumericWords {
     }
     
     abstract long convertWordsToNum(List<String> words);
+	
     List<String> replaceTextualNumbers(List<String> words) {
 
         // holds each group of textual numbers being processed together. e.g.
@@ -98,12 +102,42 @@ public abstract class LanguageNumericWords {
 
         return wordAsDigits;
     }
-    String convertTextualNumbersInDocument(String inputText) {
+    
+    
+    String convertTextualNumbersInDocument(String inputText) throws InvalidNumericWordException{
 
         // splits text into words and deals with hyphenated numbers. Use linked
         // list due to manipulation during processing
+    	String input_copy = new String(inputText);
         List<String> words = new LinkedList<String>(cleanAndTokenizeText(inputText));
 
+        boolean illegalRepetition = checkIllegalRepetition(words);
+        boolean illegalOrdering = false;
+        for(int i = 0; i < words.size(); i++) {
+        	int firstBigPowerIndex = -1;
+        	for(int k = 0; k < bigPowersOfTen.length; k++) {
+        		if(bigPowersOfTen[k].equals(words.get(i))) {
+        			firstBigPowerIndex = k;
+        		}
+        	}
+        	
+        	for(int j = i + 1; j < words.size(); j++) {
+        		int secondBigPowerIndex = -1;
+        		for(int k = 0; k < bigPowersOfTen.length; k++) {
+        			if(bigPowersOfTen[k].equals(words.get(j))) {
+        				secondBigPowerIndex = k;
+        			}
+        		}
+        		if(firstBigPowerIndex != -1 && secondBigPowerIndex != -1 && firstBigPowerIndex < secondBigPowerIndex) {
+        			System.out.println("Wrong Ordering!");
+        			throw new InvalidNumericWordException(input_copy);
+        		}
+        	}
+        }
+        if(illegalRepetition) {
+        	throw new InvalidNumericWordException(inputText); 
+        }
+        	
         // replace all the textual numbers
         words = replaceTextualNumbers(words);
 
@@ -123,5 +157,22 @@ public abstract class LanguageNumericWords {
         }
 
         return result.toString();
+    }
+    
+    public boolean checkIllegalRepetition(List<String> list){
+    	int[] occurrenceCounts = new int[bigPowersOfTen.length];
+    	for(int i = 0; i < list.size(); i++) {
+    		for(int j = 0; j < bigPowersOfTen.length; j++) {
+    			if(list.get(i).equals(bigPowersOfTen[j])) {
+    				occurrenceCounts[j]++;
+    			}
+    		}
+    	}
+    	for(int i = 0; i < occurrenceCounts.length; i++) {
+    		if(occurrenceCounts[i] >= 2) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
 }

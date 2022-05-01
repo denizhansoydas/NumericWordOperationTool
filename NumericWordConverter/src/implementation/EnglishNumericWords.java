@@ -3,6 +3,8 @@ package implementation;
 import java.util.Arrays;
 import java.util.List;
 
+import exceptions.InvalidNumericWordException;
+
 public class EnglishNumericWords extends LanguageNumericWords{
 	public EnglishNumericWords() {
 		// super();
@@ -28,14 +30,27 @@ public class EnglishNumericWords extends LanguageNumericWords{
 	            "eighty",  // 8
 	            "ninety"   // 9
 	    };
+		bigPowersOfTen = new String[] {
+				"thousand",
+				"million",
+				"billion",
+				"trillion"
+			};
 	}
 
 	@Override
-	int convert(String num) {
+	int convert(String num) throws InvalidNumericWordException{
 		int chIndex = num.indexOf(' ');
-		if(chIndex != -1 && num.substring(0,chIndex).equals("minus"))
-			return -Integer.parseInt(convertTextualNumbersInDocument(num.substring(chIndex + 1, num.length())));
-		return Integer.parseInt(convertTextualNumbersInDocument(num));
+		int res = 0;
+		if(chIndex != -1 && num.substring(0,chIndex).equals("minus")) {
+			res = -Integer.parseInt(convertTextualNumbersInDocument(num.substring(chIndex + 1, num.length())));
+		}else {
+			res = Integer.parseInt(convertTextualNumbersInDocument(num));
+		}
+		if(res == 0 && !num.equals("zero")) {
+			throw new InvalidNumericWordException(num);
+		}
+		return res;
 	}
 
 	@Override
@@ -84,75 +99,107 @@ public class EnglishNumericWords extends LanguageNumericWords{
             str = str.toLowerCase().replaceAll("[^a-zA-Z\\s]", "");
             if (str.equalsIgnoreCase("zero")) {
                 intermediateResult += 0;
-            } else if (str.equalsIgnoreCase("one")) {
+            }
+            else if (str.equalsIgnoreCase("one")) {
                 intermediateResult += 1;
-            } else if (str.equalsIgnoreCase("two")) {
+            }
+            else if (str.equalsIgnoreCase("two")) {
                 intermediateResult += 2;
-            } else if (str.equalsIgnoreCase("three")) {
+            }
+            else if (str.equalsIgnoreCase("three")) {
                 intermediateResult += 3;
-            } else if (str.equalsIgnoreCase("four")) {
+            }
+            else if (str.equalsIgnoreCase("four")) {
                 intermediateResult += 4;
-            } else if (str.equalsIgnoreCase("five")) {
+            }
+            else if (str.equalsIgnoreCase("five")) {
                 intermediateResult += 5;
-            } else if (str.equalsIgnoreCase("six")) {
+            }
+            else if (str.equalsIgnoreCase("six")) {
                 intermediateResult += 6;
-            } else if (str.equalsIgnoreCase("seven")) {
+            }
+            else if (str.equalsIgnoreCase("seven")) {
                 intermediateResult += 7;
-            } else if (str.equalsIgnoreCase("eight")) {
+            }
+            else if (str.equalsIgnoreCase("eight")) {
                 intermediateResult += 8;
-            } else if (str.equalsIgnoreCase("nine")) {
+            }
+            else if (str.equalsIgnoreCase("nine")) {
                 intermediateResult += 9;
-            } else if (str.equalsIgnoreCase("ten")) {
+            }
+            else if (str.equalsIgnoreCase("ten")) {
                 intermediateResult += 10;
-            } else if (str.equalsIgnoreCase("eleven")) {
+            }
+            else if (str.equalsIgnoreCase("eleven")) {
                 intermediateResult += 11;
-            } else if (str.equalsIgnoreCase("twelve")) {
+            }
+            else if (str.equalsIgnoreCase("twelve")) {
                 intermediateResult += 12;
-            } else if (str.equalsIgnoreCase("thirteen")) {
+            }
+            else if (str.equalsIgnoreCase("thirteen")) {
                 intermediateResult += 13;
-            } else if (str.equalsIgnoreCase("fourteen")) {
+            }
+            else if (str.equalsIgnoreCase("fourteen")) {
                 intermediateResult += 14;
-            } else if (str.equalsIgnoreCase("fifteen")) {
+            }
+            else if (str.equalsIgnoreCase("fifteen")) {
                 intermediateResult += 15;
-            } else if (str.equalsIgnoreCase("sixteen")) {
+            }
+            else if (str.equalsIgnoreCase("sixteen")) {
                 intermediateResult += 16;
-            } else if (str.equalsIgnoreCase("seventeen")) {
+            }
+            else if (str.equalsIgnoreCase("seventeen")) {
                 intermediateResult += 17;
-            } else if (str.equalsIgnoreCase("eighteen")) {
+            }
+            else if (str.equalsIgnoreCase("eighteen")) {
                 intermediateResult += 18;
-            } else if (str.equalsIgnoreCase("nineteen")) {
+            }
+            else if (str.equalsIgnoreCase("nineteen")) {
                 intermediateResult += 19;
-            } else if (str.equalsIgnoreCase("twenty")) {
+            }
+            else if (str.equalsIgnoreCase("twenty")) {
                 intermediateResult += 20;
-            } else if (str.equalsIgnoreCase("thirty")) {
+            }
+            else if (str.equalsIgnoreCase("thirty")) {
                 intermediateResult += 30;
-            } else if (str.equalsIgnoreCase("forty")) {
+            }
+            else if (str.equalsIgnoreCase("forty")) {
                 intermediateResult += 40;
-            } else if (str.equalsIgnoreCase("fifty")) {
+            }
+            else if (str.equalsIgnoreCase("fifty")) {
                 intermediateResult += 50;
-            } else if (str.equalsIgnoreCase("sixty")) {
+            }
+            else if (str.equalsIgnoreCase("sixty")) {
                 intermediateResult += 60;
-            } else if (str.equalsIgnoreCase("seventy")) {
+            }
+            else if (str.equalsIgnoreCase("seventy")) {
                 intermediateResult += 70;
-            } else if (str.equalsIgnoreCase("eighty")) {
+            }
+            else if (str.equalsIgnoreCase("eighty")) {
                 intermediateResult += 80;
-            } else if (str.equalsIgnoreCase("ninety")) {
+            }
+            else if (str.equalsIgnoreCase("ninety")) {
                 intermediateResult += 90;
-            } else if (str.equalsIgnoreCase("hundred")) {
+            }
+            else if (str.equalsIgnoreCase("hundred")) {
                 intermediateResult *= 100;
-            } else if (str.equalsIgnoreCase("thousand")) {
+            }
+            else if (str.equalsIgnoreCase("thousand")) {
                 intermediateResult *= 1000;
                 finalResult += intermediateResult;
                 intermediateResult = 0;
-            } else if (str.equalsIgnoreCase("million")) {
+            }
+            else if (str.equalsIgnoreCase("million")) {
                 intermediateResult *= 1000000;
                 finalResult += intermediateResult;
                 intermediateResult = 0;
-            } else if (str.equalsIgnoreCase("billion")) {
+            }
+            else if (str.equalsIgnoreCase("billion")) {
                 intermediateResult *= 1000000000;
                 finalResult += intermediateResult;
                 intermediateResult = 0;
-            } else if (str.equalsIgnoreCase("trillion")) {
+            }
+            else if (str.equalsIgnoreCase("trillion")) {
                 intermediateResult *= 1000000000000L;
                 finalResult += intermediateResult;
                 intermediateResult = 0;
