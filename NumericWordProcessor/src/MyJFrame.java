@@ -21,6 +21,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import definition.NumConverterI;
+import exceptions.InvalidNumericWordException;
 
 public class MyJFrame extends JFrame{
 	private JLabel label_first_in;
@@ -33,17 +34,18 @@ public class MyJFrame extends JFrame{
 	private JButton button_sub;
 	private JButton button_mul;
 	private JButton button_div;
-	private String language;
 	static final String PROJECT_NAME = "NumericWordProcessor";
+	ServiceReference<NumConverterI> ref;
+	NumConverterI numConverter;
     // Constructor
 
     public MyJFrame(BundleContext bundleContext, String language) {
     	super("Denizhan -> Ekinoks");
-    	this.language = language;
     	final int SUPPORTED_OPERATION_COUNT = 4; // COUNT(SUM, SUB, MUL, DIV).
     	
     	System.out.println("Language is : " + language);
-    	
+    	ref = bundleContext.getServiceReference(NumConverterI.class);
+        numConverter = (NumConverterI)bundleContext.getService(ref);
     	
     	//System.out.println(System.getProperty("osgi.bundles"));
     	String filePath = System.getProperty("osgi.bundles");
@@ -164,18 +166,18 @@ public class MyJFrame extends JFrame{
     	
     	button_sum.addActionListener(new ActionListener() {
     		public void actionPerformed(ActionEvent e) {
-    			String num1 = tf_first_in.getText();
-    			String num2 = tf_second_in.getText();
-    			ServiceReference<NumConverterI> ref = bundleContext.getServiceReference(NumConverterI.class);
-                NumConverterI numConverter = (NumConverterI)bundleContext.getService(ref);
-    			int first_operand = numConverter.convertToInt(language, num1);
-    			System.out.println("First operand = " + first_operand);
-    			int second_operand = numConverter.convertToInt(language, num2);
-    			System.out.println("Second operand = " + second_operand);
-    			int result = first_operand + second_operand;
-    			String resultStr = numConverter.convertToString(language, result);
-    			System.out.println("Result = " + resultStr);
-    			tf_result.setText(resultStr);
+    			JTextField[]  jTextFieldArr = {tf_first_in, tf_second_in};
+				try {
+					int[] numbers = getLabelsNumbers(language, jTextFieldArr);
+					int result = numbers[0] + numbers[1];
+    				String resultStr = numConverter.convertToString(language, result);
+        			System.out.println("Result = " + result + " = " + resultStr);
+        			tf_result.setText(resultStr);
+				}catch (InvalidNumericWordException invalidNumericWordException) { 
+					tf_result.setText(invalidNumericWordException.toString());
+				}catch(NumberFormatException numberFormatException) {
+					tf_result.setText(obj.get("number_format_exception").toString());
+				}
     		}
     	});
     	
@@ -187,18 +189,18 @@ public class MyJFrame extends JFrame{
     	
     	button_sub.addActionListener(new ActionListener() {
     		public void actionPerformed(ActionEvent e) {
-    			String num1 = tf_first_in.getText();
-    			String num2 = tf_second_in.getText();
-    			ServiceReference<NumConverterI> ref = bundleContext.getServiceReference(NumConverterI.class);
-                NumConverterI numConverter = (NumConverterI)bundleContext.getService(ref);
-    			int first_operand = numConverter.convertToInt(language, num1);
-    			System.out.println("First operand = " + first_operand);
-    			int second_operand = numConverter.convertToInt(language, num2);
-    			System.out.println("Second operand = " + second_operand);
-    			int result = first_operand - second_operand;
-    			String resultStr = numConverter.convertToString(language, result);
-    			System.out.println("Result = " + resultStr);
-    			tf_result.setText(resultStr);
+    			JTextField[]  jTextFieldArr = {tf_first_in, tf_second_in};
+				try {
+					int[] numbers = getLabelsNumbers(language, jTextFieldArr);
+					int result = numbers[0] - numbers[1];
+    				String resultStr = numConverter.convertToString(language, result);
+        			System.out.println("Result = " + result + " = " + resultStr);
+        			tf_result.setText(resultStr);
+				}catch (InvalidNumericWordException invalidNumericWordException) { 
+					tf_result.setText(invalidNumericWordException.toString());
+				}catch(NumberFormatException numberFormatException) {
+					tf_result.setText(obj.get("number_format_exception").toString());
+				}
     		}
     	});
     	
@@ -210,18 +212,18 @@ public class MyJFrame extends JFrame{
     	
     	button_mul.addActionListener(new ActionListener() {
     		public void actionPerformed(ActionEvent e) {
-    			String num1 = tf_first_in.getText();
-    			String num2 = tf_second_in.getText();
-    			ServiceReference<NumConverterI> ref = bundleContext.getServiceReference(NumConverterI.class);
-                NumConverterI numConverter = (NumConverterI)bundleContext.getService(ref);
-    			int first_operand = numConverter.convertToInt(language, num1);
-    			System.out.println("First operand = " + first_operand);
-    			int second_operand = numConverter.convertToInt(language, num2);
-    			System.out.println("Second operand = " + second_operand);
-    			int result = first_operand * second_operand;
-    			String resultStr = numConverter.convertToString(language, result);
-    			System.out.println("Result = " + resultStr);
-    			tf_result.setText(resultStr);
+    			JTextField[]  jTextFieldArr = {tf_first_in, tf_second_in};
+				try {
+					int[] numbers = getLabelsNumbers(language, jTextFieldArr);
+					int result = numbers[0] * numbers[1];
+    				String resultStr = numConverter.convertToString(language, result);
+        			System.out.println("Result = " + result + " = " + resultStr);
+        			tf_result.setText(resultStr);
+				}catch (InvalidNumericWordException invalidNumericWordException) { 
+					tf_result.setText(invalidNumericWordException.toString());
+				}catch(NumberFormatException numberFormatException) {
+					tf_result.setText(obj.get("number_format_exception").toString());
+				}
     		}
     	});
     	
@@ -233,18 +235,20 @@ public class MyJFrame extends JFrame{
     	
     	button_div.addActionListener(new ActionListener() {
     		public void actionPerformed(ActionEvent e) {
-    			String num1 = tf_first_in.getText();
-    			String num2 = tf_second_in.getText();
-    			ServiceReference<NumConverterI> ref = bundleContext.getServiceReference(NumConverterI.class);
-                NumConverterI numConverter = (NumConverterI)bundleContext.getService(ref);
-    			int first_operand = numConverter.convertToInt(language, num1);
-    			System.out.println("First operand = " + first_operand);
-    			int second_operand = numConverter.convertToInt(language, num2);
-    			System.out.println("Second operand = " + second_operand);
-    			int result = first_operand / second_operand;
-    			String resultStr = numConverter.convertToString(language, result);
-    			System.out.println("Result = " + resultStr);
-    			tf_result.setText(resultStr);
+    			JTextField[]  jTextFieldArr = {tf_first_in, tf_second_in};
+				try {
+					int[] numbers = getLabelsNumbers(language, jTextFieldArr);
+					int result = numbers[0] / numbers[1];
+    				String resultStr = numConverter.convertToString(language, result);
+        			System.out.println("Result = " + result + " = " + resultStr);
+        			tf_result.setText(resultStr);
+				}catch (InvalidNumericWordException invalidNumericWordException) { 
+					tf_result.setText(invalidNumericWordException.toString());
+				}catch(ArithmeticException arithmeticException) { // For Arithmetic Exceptions like division by zero.
+					tf_result.setText(obj.get("arithmetic_exception").toString());
+				}catch(NumberFormatException numberFormatException) {
+					tf_result.setText(obj.get("number_format_exception").toString());
+				}
     		}
     	});
     	add(button_div, gbc);
@@ -253,5 +257,20 @@ public class MyJFrame extends JFrame{
     	//setPreferredSize(new Dimension(900,900));
     	pack();
     	setVisible(true);
+    }
+    /**
+     * Takes an array of JTextFields, converts their string to an integer array, arranged in the same order.
+     * @param language The language that conversion will be made.
+     * @param jTextField
+     * @return same ordered array of converted integers
+     * @throws InvalidNumericWordException if word has an illegal logic. (Like: "million million")
+     * @throws NumberFormatException if the number has non-numeric words. (Like "Hello World")
+     */
+    int[] getLabelsNumbers(String language, JTextField[]  jTextField) throws InvalidNumericWordException, NumberFormatException{
+    	int[] arr = new int[jTextField.length];
+        for(int i = 0; i < jTextField.length; i++) {
+        	arr[i] = numConverter.convertToInt(language, jTextField[i].getText());
+        }
+        return arr;
     }
 }

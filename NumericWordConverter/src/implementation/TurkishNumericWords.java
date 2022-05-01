@@ -3,6 +3,8 @@ package implementation;
 import java.util.Arrays;
 import java.util.List;
 
+import exceptions.InvalidNumericWordException;
+
 public class TurkishNumericWords extends LanguageNumericWords{
 	public TurkishNumericWords() {
 		super();
@@ -26,21 +28,42 @@ public class TurkishNumericWords extends LanguageNumericWords{
 	            "seksen",  // 8
 	            "doksan"   // 9
 	    };
+		bigPowersOfTen = new String[] {
+			"bin",
+			"milyon",
+			"milyar",
+			"trilyon"
+		};
+		languageAbbreviation = "tr";
 	}
 
 	@Override
-	int convert(String num) {
-		// TODO Auto-generated method stub
-		return Integer.parseInt(convertTextualNumbersInDocument(num));
+	int convert(String num) throws InvalidNumericWordException{
+		int chIndex = num.indexOf(' ');
+		int res = 0;
+		if(chIndex != -1 && num.substring(0,chIndex).equals("eksi")) {
+			res = -Integer.parseInt(convertTextualNumbersInDocument(num.substring(chIndex + 1, num.length())));
+		}else {
+			res = Integer.parseInt(convertTextualNumbersInDocument(num)); 
+		} 
+		if(res == 0 && !num.equals("sýfýr")) {
+			throw new InvalidNumericWordException(languageAbbreviation, num);
+		}
+		return res;
 	}
 
 	@Override
 	String convert(int num) {
+		if(num == 0)
+			return "sýfýr";
+		return convertHelper(num);
+	}
+	private String convertHelper(int num) {
 		{
 	        if (num < 0) {
-	            return "- " + convert(-num);
+	            return "eksi " + convertHelper(-num);
 	        }
-
+	        
 	        if (num < 11) {
 	            return units[num];
 	        }
@@ -50,18 +73,18 @@ public class TurkishNumericWords extends LanguageNumericWords{
 	        }
 
 	        if (num < 1000) {
-	            return units[ num/100 == 1 ? 0 : num / 100] + " yüz" + ((num % 100 != 0) ? " " : "") + convert(num % 100);
+	            return units[ num/100 == 1 ? 0 : num / 100] + " yüz" + ((num % 100 != 0) ? " " : "") + convertHelper(num % 100);
 	        }
 
 	        if (num < 1000000) {
-	            return convert(num/1000 == 1 ? 0 : num / 1000) + " bin" + ((num % 1000 != 0) ? " " : "") + convert(num % 1000);
+	            return convertHelper(num/1000 == 1 ? 0 : num / 1000) + " bin" + ((num % 1000 != 0) ? " " : "") + convertHelper(num % 1000);
 	        }
 
 	        if (num < 1000000000) {
-	            return convert(num/1000000 == 1 ? 0 : num / 1000000) + " milyon" + ((num % 1000000 != 0) ? " " : "") + convert(num % 1000000);
+	            return convertHelper(num / 1000000) + " milyon" + ((num % 1000000 != 0) ? " " : "") + convertHelper(num % 1000000);
 	        }
 
-	        return convert(num/1000000000 == 1 ? 0 : num / 1000000000) + " milyar"  + ((num % 1000000000 != 0) ? " " : "") + convert(num % 1000000000);
+	        return convertHelper(num / 1000000000) + " milyar"  + ((num % 1000000000 != 0) ? " " : "") + convertHelper(num % 1000000000);
 	    }
 	}
 

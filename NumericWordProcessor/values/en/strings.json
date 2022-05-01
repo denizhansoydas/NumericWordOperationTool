@@ -5,5 +5,7 @@
 	"button_sum" : "Sum",
 	"button_sub" : "Subtract",
 	"button_mul" : "Multiply",
-	"button_div" : "Divide"
+	"button_div" : "Divide",
+	"number_format_exception" : "Couldn't fully convert",
+	"arithmetic_exception" : "Arithmetic Exception in the operation!"
 }
