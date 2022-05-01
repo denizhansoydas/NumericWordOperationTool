@@ -14,6 +14,7 @@ public abstract class LanguageNumericWords {
 	String[] units;
 	String[] tens;
 	String[] bigPowersOfTen;
+	String languageAbbreviation;
 	LanguageNumericWords(){
 		
 	}
@@ -130,12 +131,12 @@ public abstract class LanguageNumericWords {
         		}
         		if(firstBigPowerIndex != -1 && secondBigPowerIndex != -1 && firstBigPowerIndex < secondBigPowerIndex) {
         			System.out.println("Wrong Ordering!");
-        			throw new InvalidNumericWordException(input_copy);
+        			throw new InvalidNumericWordException(languageAbbreviation, input_copy);
         		}
         	}
         }
         if(illegalRepetition) {
-        	throw new InvalidNumericWordException(inputText); 
+        	throw new InvalidNumericWordException(languageAbbreviation, inputText); 
         }
         	
         // replace all the textual numbers

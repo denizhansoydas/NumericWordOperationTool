@@ -5,7 +5,8 @@
 	"button_sum" : "Topla",
 	"button_sub" : "Çıkar",
 	"button_mul" : "Çarp",
-	"button_div" : "Böl"
-
+	"button_div" : "Böl",
+	"number_format_exception" : "hatalı sayı girişi",
+	"arithmetic_exception" : "İşleminizde aritmetik bir hata var!"
 
 }

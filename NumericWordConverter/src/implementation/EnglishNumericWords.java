@@ -36,6 +36,7 @@ public class EnglishNumericWords extends LanguageNumericWords{
 				"billion",
 				"trillion"
 			};
+		languageAbbreviation = "en";
 	}
 
 	@Override
@@ -48,7 +49,7 @@ public class EnglishNumericWords extends LanguageNumericWords{
 			res = Integer.parseInt(convertTextualNumbersInDocument(num));
 		}
 		if(res == 0 && !num.equals("zero")) {
-			throw new InvalidNumericWordException(num);
+			throw new InvalidNumericWordException(languageAbbreviation, num);
 		}
 		return res;
 	}

@@ -178,7 +178,7 @@ public class MyJFrame extends JFrame{
 				}catch (InvalidNumericWordException invalidNumericWordException) { 
 					tf_result.setText(invalidNumericWordException.toString());
 				}catch(NumberFormatException numberFormatException) {
-					tf_result.setText(numberFormatException.getClass().getSimpleName() + " " + numberFormatException.getMessage());
+					tf_result.setText(obj.get("number_format_exception").toString());
 				}
     		}
     	});
@@ -201,7 +201,7 @@ public class MyJFrame extends JFrame{
 				}catch (InvalidNumericWordException invalidNumericWordException) { 
 					tf_result.setText(invalidNumericWordException.toString());
 				}catch(NumberFormatException numberFormatException) {
-					tf_result.setText(numberFormatException.getClass().getSimpleName() + " " + numberFormatException.getMessage());
+					tf_result.setText(obj.get("number_format_exception").toString());
 				}
     		}
     	});
@@ -224,7 +224,7 @@ public class MyJFrame extends JFrame{
 				}catch (InvalidNumericWordException invalidNumericWordException) { 
 					tf_result.setText(invalidNumericWordException.toString());
 				}catch(NumberFormatException numberFormatException) {
-					tf_result.setText(numberFormatException.getClass().getSimpleName() + " " + numberFormatException.getMessage());
+					tf_result.setText(obj.get("number_format_exception").toString());
 				}
     		}
     	});
@@ -247,9 +247,9 @@ public class MyJFrame extends JFrame{
 				}catch (InvalidNumericWordException invalidNumericWordException) { 
 					tf_result.setText(invalidNumericWordException.toString());
 				}catch(ArithmeticException arithmeticException) { // For Arithmetic Exceptions like division by zero.
-					tf_result.setText("Invalid Operation because you've tried " + arithmeticException.getMessage());
+					tf_result.setText(obj.get("arithmetic_exception").toString());
 				}catch(NumberFormatException numberFormatException) {
-					tf_result.setText("Couldn't fully convert: " + numberFormatException.getMessage());
+					tf_result.setText(obj.get("number_format_exception").toString());
 				}
     		}
     	});

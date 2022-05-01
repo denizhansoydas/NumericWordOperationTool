@@ -34,6 +34,7 @@ public class TurkishNumericWords extends LanguageNumericWords{
 			"milyar",
 			"trilyon"
 		};
+		languageAbbreviation = "tr";
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class TurkishNumericWords extends LanguageNumericWords{
 			res = Integer.parseInt(convertTextualNumbersInDocument(num)); 
 		} 
 		if(res == 0 && !num.equals("sýfýr")) {
-			throw new InvalidNumericWordException(num);
+			throw new InvalidNumericWordException(languageAbbreviation, num);
 		}
 		return res;
 	}
