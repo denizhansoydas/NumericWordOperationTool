@@ -34,7 +34,6 @@ public class MyJFrame extends JFrame{
 	private JButton button_sub;
 	private JButton button_mul;
 	private JButton button_div;
-	private String language;
 	static final String PROJECT_NAME = "NumericWordProcessor";
 	ServiceReference<NumConverterI> ref;
 	NumConverterI numConverter;
@@ -42,7 +41,6 @@ public class MyJFrame extends JFrame{
 
     public MyJFrame(BundleContext bundleContext, String language) {
     	super("Denizhan -> Ekinoks");
-    	this.language = language;
     	final int SUPPORTED_OPERATION_COUNT = 4; // COUNT(SUM, SUB, MUL, DIV).
     	
     	System.out.println("Language is : " + language);
