@@ -1,11 +1,12 @@
 package implementation;
 
 import definition.NumConverterI;
+import exceptions.InvalidNumericWordException;
 
 public class NumConverter implements NumConverterI {
 
     @Override
-    public int convertToInt(String locale, String sentence) {
+    public int convertToInt(String locale, String sentence) throws InvalidNumericWordException{
         LanguageNumericWords numericWords = null;
     	if(locale.equals("en")) {
     		numericWords = new EnglishNumericWords();        	
