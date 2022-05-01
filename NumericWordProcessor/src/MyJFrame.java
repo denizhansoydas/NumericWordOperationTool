@@ -249,7 +249,7 @@ public class MyJFrame extends JFrame{
 				}catch(ArithmeticException arithmeticException) { // For Arithmetic Exceptions like division by zero.
 					tf_result.setText("Invalid Operation because you've tried " + arithmeticException.getMessage());
 				}catch(NumberFormatException numberFormatException) {
-					tf_result.setText(numberFormatException.getClass().getSimpleName() + " " + numberFormatException.getMessage());
+					tf_result.setText("Couldn't fully convert: " + numberFormatException.getMessage());
 				}
     		}
     	});
